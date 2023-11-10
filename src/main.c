@@ -6,7 +6,7 @@
 /*   By: tdelgran <tdelgran@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:14:10 by tdelgran          #+#    #+#             */
-/*   Updated: 2023/11/10 15:48:01 by tdelgran         ###   ########.fr       */
+/*   Updated: 2023/11/10 16:13:04 by tdelgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,21 @@
 
 void	display_died(t_philo *philo)
 {
-	int			timestamp;
-	const char	*color_code;
+    int	timestamp;
 
-	color_code = "\033[1;31m";
-	timestamp = get_current_time() - philo->sim->sim_start_time;
-	pthread_mutex_lock(&philo->sim->death_mutex);
-	pthread_mutex_lock(&philo->sim->mutex_print);
-	if (philo->sim->philo_is_dead == 1)
-	{
-		philo->sim->philo_is_dead++;
-		printf("%s[%d] %d %s\033[0m\n",
-			color_code, timestamp, philo->id, "died");
-		pthread_mutex_unlock(&philo->sim->death_mutex);
-		pthread_mutex_unlock(&philo->sim->mutex_print);
-		return ;
-	}
-	pthread_mutex_unlock(&philo->sim->mutex_print);
-	pthread_mutex_unlock(&philo->sim->death_mutex);
+    timestamp = get_current_time() - philo->sim->sim_start_time;
+    pthread_mutex_lock(&philo->sim->death_mutex);
+    pthread_mutex_lock(&philo->sim->mutex_print);
+    if (philo->sim->philo_is_dead == 1)
+    {
+        philo->sim->philo_is_dead++;
+        printf("[%d] %d died\n", timestamp, philo->id);
+        pthread_mutex_unlock(&philo->sim->mutex_print);
+        pthread_mutex_unlock(&philo->sim->death_mutex);
+        return;
+    }
+    pthread_mutex_unlock(&philo->sim->mutex_print);
+    pthread_mutex_unlock(&philo->sim->death_mutex);
 }
 
 int	check_death(t_philo *philo)
