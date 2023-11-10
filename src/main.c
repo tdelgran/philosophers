@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdelgran <tdelgran@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: ltestard <ltestard@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:14:10 by tdelgran          #+#    #+#             */
-/*   Updated: 2023/11/10 18:21:41 by tdelgran         ###   ########.fr       */
+/*   Updated: 2023/11/10 19:11:21 by ltestard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 void	display_died(t_philo *philo)
 {
-    int	timestamp;
+	int	timestamp;
 
-    timestamp = get_current_time() - philo->sim->sim_start_time;
-    pthread_mutex_lock(&philo->sim->death_mutex);
-    pthread_mutex_lock(&philo->sim->mutex_print);
-    if (philo->sim->philo_is_dead == 1)
-    {
-        philo->sim->philo_is_dead++;
-        printf("[%d] %d died\n", timestamp, philo->id);
-        pthread_mutex_unlock(&philo->sim->mutex_print);
-        pthread_mutex_unlock(&philo->sim->death_mutex);
-        return;
-    }
-    pthread_mutex_unlock(&philo->sim->mutex_print);
-    pthread_mutex_unlock(&philo->sim->death_mutex);
+	timestamp = get_current_time() - philo->sim->sim_start_time;
+	pthread_mutex_lock(&philo->sim->death_mutex);
+	pthread_mutex_lock(&philo->sim->mutex_print);
+	if (philo->sim->philo_is_dead == 1)
+	{
+		philo->sim->philo_is_dead++;
+		printf("[%d] %d died\n", timestamp, philo->id);
+		pthread_mutex_unlock(&philo->sim->mutex_print);
+		pthread_mutex_unlock(&philo->sim->death_mutex);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->sim->mutex_print);
+	pthread_mutex_unlock(&philo->sim->death_mutex);
 }
 
 int	check_death(t_philo *philo)
@@ -75,9 +75,9 @@ void	free_resources(t_sim *data)
 	pthread_mutex_destroy(&data->mutex_print);
 }
 
-void    *monitor_check(void *arg)
+void	*monitor_check(void *arg)
 {
-    t_philo	*philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	while (1)
@@ -102,16 +102,16 @@ void    *monitor_check(void *arg)
 	return (NULL);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    t_sim		sim;
+	t_sim		sim;
 	pthread_t	*monitor;
-    
-    if (check_arg(argc, argv, &sim))
-        return (1);
-    sim.sim_start_time = get_current_time();
+
+	if (check_arg(argc, argv, &sim))
+		return (1);
+	sim.sim_start_time = get_current_time();
 	monitor = malloc(sizeof(t_philo) * sim.philo_count);
-		if (sim.philo_count == 1)
+	if (sim.philo_count == 1)
 	{
 		single_philo(&sim, monitor);
 		return (1);
@@ -120,5 +120,5 @@ int main(int argc, char **argv)
 	join_philo_threads(&sim, monitor);
 	free(monitor);
 	free_resources(&sim);
-    return (0);
+	return (0);
 }
