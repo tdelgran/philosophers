@@ -6,7 +6,7 @@
 /*   By: tdelgran <tdelgran@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:14:10 by tdelgran          #+#    #+#             */
-/*   Updated: 2023/11/10 16:13:04 by tdelgran         ###   ########.fr       */
+/*   Updated: 2023/11/10 18:21:41 by tdelgran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void    *monitor_check(void *arg)
 			pthread_mutex_unlock(&philo->sim->mutex_last_meal);
 			return (NULL);
 		}
-		ft_usleep(100);
+		ft_usleep(1000);
 	}
 	return (NULL);
 }
